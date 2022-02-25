@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/mtDNNTest/include",
+                "/home/bingcheng.zhou/project/mtDNN/build/export_headers/cc"
+            ]
+        }
+    ],
+    "version": 4
+}

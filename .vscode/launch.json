@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "gdb-test",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/mtDNNTest/dist/${fileBasenameNoExtension}.out",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${fileDirname}",
+        "environment": [{
+          "name": "MTDNN_PLATFORM_NAME",
+          "value": "NVIDIA CUDA"
+        },
+        {
+          "name": "LD_LIBRARY_PATH",
+          "value": "/home/bingcheng.zhou/project/mtDNN/build"
+        },
+      ],
+        "externalConsole": false,
+        "MIMode": "gdb",
+        "setupCommands": [
+          {
+            "description": "为 gdb 启用整齐打印",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          }
+        ],
+        "preLaunchTask": "build debug",
+        "miDebuggerPath": "/usr/bin/gdb"
+      }
+    ]
+  }

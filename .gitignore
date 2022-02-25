@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+.history
+testdata/conv*
+__pycache__
+*.un~

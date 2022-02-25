@@ -1,0 +1,82 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build",
+        "type": "shell",
+        "command": "g++",
+        "args":[
+            "${file}",
+            "-I",
+            "${workspaceFolder}/mtDNNTest/include",
+            "-I",
+            "/home/bingcheng.zhou/project/mtDNN/build/export_headers/cc",
+            "-lmtdnn",
+            "-L",
+            "/home/bingcheng.zhou/project/mtDNN/build",
+            "-DCL_TARGET_OPENCL_VERSION=120",
+            "-o",
+            "${workspaceFolder}/mtDNNTest/dist/${fileBasenameNoExtension}.out",
+        ],
+        "options": {
+            "cwd": "/usr/bin"
+        },
+        "group":{
+            "kind": "build",
+            "isDefault": true
+        }
+    },
+      {
+        "label": "build debug",
+        "type": "shell",
+        "command": "g++",
+        "args":[
+            "-g",
+            "${file}",
+            "-I",
+            "${workspaceFolder}/mtDNNTest/include",
+            "-I",
+            "/home/bingcheng.zhou/project/mtDNN/build/export_headers/cc",
+            "-lmtdnn",
+            "-L",
+            "/home/bingcheng.zhou/project/mtDNN/build",
+            "-DCL_TARGET_OPENCL_VERSION=120",
+            "-o",
+            "${workspaceFolder}/mtDNNTest/dist/${fileBasenameNoExtension}.out",
+        ],
+        "options": {
+            "cwd": "/usr/bin"
+        },
+        "group":{
+            "kind": "build",
+            "isDefault": true
+        }
+    },
+    {
+        "label": "run cpp",
+        "type": "shell",
+        "command": "${workspaceFolder}/mtDNNTest/dist/${fileBasenameNoExtension}.out",
+        "options": {
+            "cwd": "/usr/bin"
+        },
+        "group":{
+            "kind": "test",
+            "isDefault": true
+        }
+    },
+    {
+        "label": "run python",
+        "type": "shell",
+        "command": "/home/bingcheng.zhou/miniconda3/envs/mt_pytorch/bin/python ${file}",
+        "options": {
+            "cwd": "/usr/bin"
+        },
+        "group":{
+            "kind": "test",
+            "isDefault": true
+        }
+    }
+    ]
+}
