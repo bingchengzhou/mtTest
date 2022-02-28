@@ -8,8 +8,8 @@ def make_data():
     inp = torch.rand([1, 64, 501, 501])
     module = torch.nn.ConvTranspose2d(in_channels=64, out_channels=128, kernel_size=(2, 2),
     stride=(2, 2), bias=False)
-    # save_torch_to_txt(inp.cpu(), txt_name="convTrans2d_input.txt", file_dir="convTrans2d")
-    # save_torch_to_txt(module.weight.data.cpu(), txt_name="convTrans2d_weight.txt", file_dir="convTrans2d")
+    save_torch_to_txt(inp.cpu(), txt_name="convTrans2d_input.txt", file_dir="convTrans2d")
+    save_torch_to_txt(module.weight.data.cpu(), txt_name="convTrans2d_weight.txt", file_dir="convTrans2d")
     return inp, module
 
 

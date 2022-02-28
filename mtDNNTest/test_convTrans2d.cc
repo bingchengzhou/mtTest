@@ -3,6 +3,8 @@
 #include <iostream>
 #include <mtdnn.h>
 #include <utils.h>
+#include <setting.h>
+
 
 void UserRelease(void* ptr) {
   std::cout << "Release: " << ptr << std::endl;
@@ -21,14 +23,12 @@ void UserRelease(void* ptr) {
 
 int main() {
   using ::mt::dnn::Tensor;
-  std::string input_file_path("/home/bingcheng.zhou/project/mtTest/testdata/"
-                              "convTrans2d/convTrans2d_input.txt");
+  std::string input_file_path(DATA_DIR"convTrans2d/convTrans2d_input.txt");
   std::vector<float> input_data_vec;
   std::vector<int> input_dims;
   readfile(input_dims, input_data_vec, input_file_path);
 
-  std::string weight_file_path("/home/bingcheng.zhou/project/mtTest/testdata/"
-                               "convTrans2d/convTrans2d_weight.txt");
+  std::string weight_file_path(DATA_DIR"convTrans2d/convTrans2d_weight.txt");
   std::vector<float> weight_data_vec;
   std::vector<int> weight_dims;
   readfile(weight_dims, weight_data_vec, weight_file_path);
@@ -37,7 +37,7 @@ int main() {
   mt::dnn::Convolution::Algorithm algo = mt::dnn::Convolution::Algorithm::IMPLICIT_GEMM;
   mt::dnn::Convolution::ComputeMode mode =
       mt::dnn::Convolution::ComputeMode::ALL;
-  // set conv info
+  // set conv info as test_convTrans2d.cc
   const int pad_h = 0, pad_w = 0;
   const int dilation_h = 1, dilation_w = 1;
   const int stride_h = 2, stride_w = 2;
@@ -93,6 +93,9 @@ int main() {
   std::vector<float> output(dataOutSize / sizeof(float));
   std::cout << "dataOutSize:" << dataOutSize << std::endl;
   Tensor::MemcpyD2H(output.data(), clmem_output, (size_t)dataOutSize);
-
+  std::cout << "out first data:" << output[0] << ",end data:" << output[dataOutSize / sizeof(float) - 1] << std::endl;
+  Tensor::Release(clmem_output);
+  Tensor::Release(clmem_input);
+  Tensor::Release(clmem_w);
   return 0;
 }
