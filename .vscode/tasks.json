@@ -67,9 +67,21 @@
         }
     },
     {
-        "label": "run python",
+        "label": "run mt pytorch",
         "type": "shell",
         "command": "/home/bingcheng.zhou/miniconda3/envs/mt_pytorch/bin/python ${file}",
+        "options": {
+            "cwd": "/usr/bin"
+        },
+        "group":{
+            "kind": "test",
+            "isDefault": true
+        }
+    },
+    {
+        "label": "run pytorch",
+        "type": "shell",
+        "command": "/home/bingcheng.zhou/miniconda3/bin/python ${file}",
         "options": {
             "cwd": "/usr/bin"
         },

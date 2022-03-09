@@ -1,8 +1,6 @@
-import time
 import torch
-import musa_torch_extension
 
-def diff_mt_cpu(output_mt, output):
+def diff_cpu(output_mt, output):
 #    print(torch.abs(output_mt.cpu() - output.cpu()))
     diff_res = output_mt.cpu() - output.cpu()
     l1_sum_error = torch.sum(torch.abs(diff_res))

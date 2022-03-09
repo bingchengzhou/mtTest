@@ -2,7 +2,6 @@ import numpy as np
 import os
 import codecs
 import torch
-import musa_torch_extension
 
 from driver import DATA_PATH
 

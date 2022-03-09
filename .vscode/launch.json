@@ -32,11 +32,20 @@
       "miDebuggerPath": "/usr/bin/gdb"
     },
     {
-      "name": "Python debug",
+      "name": "mt_pytorch_debug",
       "type": "python",
       "request": "launch",
       "program": "${file}",
-      "console": "integratedTerminal"
+      "console": "integratedTerminal",
+      "python": "/home/bingcheng.zhou/miniconda3/envs/mt_pytorch/bin/python"
+    },
+    {
+      "name": "pytorch_debug",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "python": "/home/bingcheng.zhou/miniconda3/bin/python"
     },
   ]
 }
