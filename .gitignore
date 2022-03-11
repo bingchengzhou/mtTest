@@ -34,3 +34,4 @@
 testdata/*
 __pycache__
 *.un~
+build
