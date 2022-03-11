@@ -6,13 +6,13 @@ from utils.diff import diff_cpu
 from utils.save import save_torch_to_txt
 
 def make_data():
-    inp = torch.rand([1, 512, 102, 703])
+    inp = torch.rand([1, 512, 505, 703])
     module = torch.nn.BatchNorm2d(num_features=512)
-    save_torch_to_txt(inp.cpu(), txt_name="batchNorm2d_input.txt", file_dir="batchNorm2d")
-    save_torch_to_txt(module.weight.data.cpu(), txt_name="batchNorm2d_weight.txt", file_dir="batchNorm2d")
-    save_torch_to_txt(module.bias.data.cpu(), txt_name="batchNorm2d_bias.txt", file_dir="batchNorm2d")
-    save_torch_to_txt(module.running_mean.data.cpu(), txt_name="batchNorm2d_running_mean.txt", file_dir="batchNorm2d")
-    save_torch_to_txt(module.running_var.data.cpu(), txt_name="batchNorm2d_running_var.txt", file_dir="batchNorm2d")
+    # save_torch_to_txt(inp.cpu(), txt_name="batchNorm2d_input.txt", file_dir="batchNorm2d")
+    # save_torch_to_txt(module.weight.data.cpu(), txt_name="batchNorm2d_weight.txt", file_dir="batchNorm2d")
+    # save_torch_to_txt(module.bias.data.cpu(), txt_name="batchNorm2d_bias.txt", file_dir="batchNorm2d")
+    # save_torch_to_txt(module.running_mean.data.cpu(), txt_name="batchNorm2d_running_mean.txt", file_dir="batchNorm2d")
+    # save_torch_to_txt(module.running_var.data.cpu(), txt_name="batchNorm2d_running_var.txt", file_dir="batchNorm2d")
     return inp, module
 
 
@@ -31,6 +31,7 @@ def main():
             out_cpu = bn(inp)
     et = time.time()
     print("current cpu cost:{:.4f}ms".format((et - bt) / test_count * 1000))
+    # save_torch_to_txt(out_cpu.cpu(), txt_name="batchNorm2d_output.txt", file_dir="batchNorm2d")
     bn.to("mtgpu")
 
     bt = time.time()

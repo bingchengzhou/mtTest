@@ -1,0 +1,5 @@
+# ninja log v5
+1	12409	1646967207500362153	/home/bingcheng.zhou/project/mtTest/mtPytorchTest/dcn/build/temp.linux-x86_64-3.9/src/deform_conv_cuda_kernel.o	e09c2a5a45a35fb8
+0	14497	1646967209572354458	/home/bingcheng.zhou/project/mtTest/mtPytorchTest/dcn/build/temp.linux-x86_64-3.9/src/deform_conv_cuda.o	3e4461e1e285da6d
+0	11529	1646967221404310536	/home/bingcheng.zhou/project/mtTest/mtPytorchTest/dcn/build/temp.linux-x86_64-3.9/src/deform_pool_cuda_kernel.o	4fc456e4827029dc
+0	14511	1646967224392299449	/home/bingcheng.zhou/project/mtTest/mtPytorchTest/dcn/build/temp.linux-x86_64-3.9/src/deform_pool_cuda.o	346764414d0fed31

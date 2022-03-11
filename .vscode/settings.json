@@ -88,7 +88,8 @@
       "stack": "cpp",
       "*.md": "cpp",
       "__tree": "cpp",
-      "set": "cpp"
+      "set": "cpp",
+      "strstream": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
   }

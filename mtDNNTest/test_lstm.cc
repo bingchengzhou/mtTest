@@ -45,8 +45,8 @@ void load_weight_bias_and_check(std::vector<std::vector<float>> &weight_vecs,
 }
 
 void UserRelease(void *ptr) {
-  // std::cout << "Release: " << ptr << std::endl;
-  // delete [] ptr;
+  std::cout << "Release: " << ptr << std::endl;
+  delete [] ptr;
   ::mt::dnn::Tensor::Release(ptr);
 }
 
@@ -171,6 +171,8 @@ int main() {
       } else {
         input.SetAddr(tmp_cl_output);
       }
+      // std::vector<float> test_vec(batch_size * seq_len * input_features);
+      // Tensor::MemcpyD2H(test_vec.data(), cl_input, input_size);
       hi.SetAddr(cl_hi);
       ci.SetAddr(cl_hi);
 
@@ -266,26 +268,26 @@ int main() {
     Tensor::MemcpyD2H(co_vec.data(), cl_ci, output_size);
   }
 
-  Tensor::Release(cl_output);
-  Tensor::Release(cl_ho);
-  Tensor::Release(cl_co);
+  // Tensor::Release(cl_output);
+  // Tensor::Release(cl_ho);
+  // Tensor::Release(cl_co);
 
-  Tensor::Release(cl_input);
-  Tensor::Release(cl_hi);
-  Tensor::Release(cl_ci);
+  // Tensor::Release(cl_input);
+  // Tensor::Release(cl_hi);
+  // Tensor::Release(cl_ci);
 
-  Tensor::Release(cl_wi);
-  Tensor::Release(cl_bi);
-  Tensor::Release(cl_wh);
-  Tensor::Release(cl_bh);
+  // Tensor::Release(cl_wi);
+  // Tensor::Release(cl_bi);
+  // Tensor::Release(cl_wh);
+  // Tensor::Release(cl_bh);
 
-  if (num_layers > 1) Tensor::Release(tmp_cl_output);
-  if (bidirectional){
-    Tensor::Release(cl_wir);
-    Tensor::Release(cl_bir);
-    Tensor::Release(cl_whr);
-    Tensor::Release(cl_bhr);
-  }
+  // if (num_layers > 1) Tensor::Release(tmp_cl_output);
+  // if (bidirectional){
+  //   Tensor::Release(cl_wir);
+  //   Tensor::Release(cl_bir);
+  //   Tensor::Release(cl_whr);
+  //   Tensor::Release(cl_bhr);
+  // }
   
   std::cout << "output first data:" << output_vec[0] << ",output last data:" 
   << output_vec[output_size / sizeof(float) - 1] << std::endl;;

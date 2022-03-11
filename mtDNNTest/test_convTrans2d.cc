@@ -7,18 +7,18 @@
 
 
 void UserRelease(void* ptr) {
-  std::cout << "Release: " << ptr << std::endl;
+  // std::cout << "Release: " << ptr << std::endl;
   // delete [] ptr;
   ::mt::dnn::Tensor::Release(ptr);
 }
 
 ::mt::dnn::MemoryHandler UserAlloc(long unsigned s) {
-  // void* ptr = reinterpret_cast<void*>(new char[s]);
-  // std::cout << "Alloc: " << ptr << std::endl;
-  // return ::mt::dnn::MemoryHandler(ptr, UserRelease);
-  cl_mem clmem;
-  ::mt::dnn::Tensor::Allocate(s, reinterpret_cast<void **>(&clmem));
-  return ::mt::dnn::MemoryHandler(clmem, UserRelease);
+  void* ptr = reinterpret_cast<void*>(new char[s]);
+  std::cout << "Alloc: " << ptr << std::endl;
+  return ::mt::dnn::MemoryHandler(ptr, UserRelease);
+  // cl_mem clmem;
+  // ::mt::dnn::Tensor::Allocate(s, reinterpret_cast<void **>(&clmem));
+  // return ::mt::dnn::MemoryHandler(clmem, UserRelease);
 }
 
 int main() {
