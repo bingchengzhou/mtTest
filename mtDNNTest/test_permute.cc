@@ -28,7 +28,7 @@ int main() {
   std::vector<int> input_dims;
   readfile(input_dims, input_data_vec, input_file_path);
 
-// if weigth tensorflow is filter(h,w,in,out), h w Ci Co -> Co Ci h w
+// if weigth tensorflow is filter(h,w,in,out), h w Ci Co -> Co Ci h w， permute 3, 2, 0, 1
 // for example input w, dim:2, 2, 16, 32, stride:1024, 512, 32, 1
 //              out w, dim:2, 2, 16, 32, stride: 2, 1, 4 ,64
 
@@ -47,16 +47,17 @@ int main() {
 
   Tensor t_input, t_output;
   t_input.SetType(Tensor::Type::FLOAT);
-  t_input.SetNdInfo({batch_size, channels_in, height, width}, {channels_in * height * width, height * width, width, 1});
+  t_input.SetNdInfo({batch_size, channels_in, height, width});
+  // t_input.SetNdInfo({batch_size, channels_in, height, width}, {channels_in * height * width, height * width, width, 1});
   t_input.SetAddr(clmem_input);
 
   t_output.SetType(Tensor::Type::FLOAT);
-  t_output.SetNdInfo({batch_size, channels_in, height, width}, {height * width * channels_in, 1, width * channels_in, channels_in});
+  // t_output.SetNdInfo({batch_size, channels_in, height, width}, {height * width * channels_in, 1, width * channels_in, channels_in});
   t_output.SetAddr(clmem_output);
 
   ::mt::dnn::Handle h;
   ::mt::dnn::Permute perm;
-
+  perm.ConfigDimStride(t_output, t_input, {0, 2, 3, 1});
   perm.Run(h, t_output, t_input);
 
   std::vector<float> output(dataInSize / sizeof(float));
