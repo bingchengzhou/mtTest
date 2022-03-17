@@ -28,6 +28,9 @@ int main() {
   std::vector<int> input_dims;
   readfile(input_dims, input_data_vec, input_file_path);
 
+// if weigth tensorflow is filter(h,w,in,out), h w Ci Co -> Co Ci h w
+// for example input w, dim:2, 2, 16, 32, stride:1024, 512, 32, 1
+//              out w, dim:2, 2, 16, 32, stride: 2, 1, 4 ,64
 
   const int batch_size = input_dims[0];
   const int channels_in = input_dims[1];
