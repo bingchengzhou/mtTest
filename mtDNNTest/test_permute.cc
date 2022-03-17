@@ -59,6 +59,7 @@ int main() {
   ::mt::dnn::Permute perm;
   perm.ConfigDimStride(t_output, t_input, {0, 2, 3, 1});
   perm.Run(h, t_output, t_input);
+  t_output.SetNdInfo({batch_size, height, width, channels_in});
 
   std::vector<float> output(dataInSize / sizeof(float));
   std::cout << "dataInSize:" << dataInSize << std::endl;
