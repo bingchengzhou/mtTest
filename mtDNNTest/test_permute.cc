@@ -48,7 +48,7 @@ int main() {
   t_input.SetAddr(clmem_input);
 
   t_output.SetType(Tensor::Type::FLOAT);
-  t_output.SetNdInfo({batch_size, height, width, channels_in}, {height * width * channels_in, width * channels_in, channels_in, 1});
+  t_output.SetNdInfo({batch_size, channels_in, height, width}, {height * width * channels_in, 1, width * channels_in, channels_in});
   t_output.SetAddr(clmem_output);
 
   ::mt::dnn::Handle h;
