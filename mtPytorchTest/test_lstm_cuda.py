@@ -4,13 +4,14 @@ import time
 from utils.diff import diff_cpu
 
 def make_data():
-    seq_len = 257
+    seq_len = 200
     batch_size = 64
     feature_num = 512
     hidden_size = 256
     num_layers = 1
     inp = torch.rand([seq_len, batch_size, feature_num])
-    module = torch.nn.LSTM(input_size=feature_num, hidden_size=hidden_size, num_layers=num_layers, bidirectional=True)
+    bidirectional = False
+    module = torch.nn.LSTM(input_size=feature_num, hidden_size=hidden_size, num_layers=num_layers, bidirectional=bidirectional)
     return inp, module
 
 

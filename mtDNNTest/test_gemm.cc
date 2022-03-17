@@ -40,7 +40,7 @@ int main() {
   const int output_features = weight_dims[0];
   assert(weight_dims[1] == input_features);
 
-  cl_mem cl_output, cl_input, cl_wi;
+  cl_mem cl_output, cl_output_new, cl_input, cl_wi;
   const size_t output_size =
       sizeof(float) * seq_len * batch_size * output_features;
   const size_t input_size =
@@ -48,6 +48,7 @@ int main() {
   const size_t wi_size = sizeof(float) * output_features * input_features;
   
   Tensor::Allocate(output_size, reinterpret_cast<void **>(&cl_output));
+  Tensor::Allocate(output_size, reinterpret_cast<void **>(&cl_output_new));
 
   Tensor::Allocate(input_size, reinterpret_cast<void **>(&cl_input));
   Tensor::MemcpyH2D(cl_input, input_data_vec.data(), input_size);
@@ -56,26 +57,39 @@ int main() {
   Tensor::MemcpyH2D(cl_wi, weight_data_vec.data(), wi_size);
 
   Tensor output, input, wi;
+  Tensor output_new;
 
   output.SetType(Tensor::Type::FLOAT);
+  output_new.SetType(Tensor::Type::FLOAT);
   input.SetType(Tensor::Type::FLOAT);
   wi.SetType(Tensor::Type::FLOAT);
 
 
   output.SetNdInfo({seq_len * batch_size, output_features});
+  output_new.SetNdInfo({seq_len * batch_size, output_features});
   input.SetNdInfo({seq_len * batch_size, input_features});
   wi.SetNdInfo({output_features, input_features});
 
   input.SetAddr(cl_input);
   wi.SetAddr(cl_wi);
+  output.SetAddr(cl_output);
+  output_new.SetAddr(cl_output_new);
 
-  ::mt::dnn::BatchMatMul bmm;
+  ::mt::dnn::Dot dot;
   ::mt::dnn::Handle h;
-  bmm.SetTranspose(false, true);
-  bmm.Run(h, output, input, wi);
+  dot.SetAxes(-1, -1);
+  dot.Run(h, output, input, wi);
+
+  ::mt::dnn::MatMul matmul;
+  matmul.SetTranspose(false, true);
+  matmul.Run(h, output_new, input, wi);
+
 
   std::vector<float> output_vec(output_size / sizeof(float));
   Tensor::MemcpyD2H(output_vec.data(), cl_output, output_size);
+  std::cout << "output first data:" << output_vec[0] << ",output last data:" 
+  << output_vec[output_size / sizeof(float) - 1] << std::endl;;
+  Tensor::MemcpyD2H(output_vec.data(), cl_output_new, output_size);
   std::cout << "output first data:" << output_vec[0] << ",output last data:" 
   << output_vec[output_size / sizeof(float) - 1] << std::endl;;
 

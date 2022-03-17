@@ -20,11 +20,11 @@ void load_weight_bias_and_check(std::vector<std::vector<float>> &weight_vecs,
   std::string bh_file_path(DATA_DIR);
   bool is_first_layer = layer_num == 0;
 
-  wh_file_path += (is_hidden ? "lstm/lstm_weight_hh_l"
-                  : "lstm/lstm_weight_ih_l") + std::to_string(layer_num) + 
+  wh_file_path += (is_hidden ? "bilstm/bilstm_weight_hh_l"
+                  : "bilstm/bilstm_weight_ih_l") + std::to_string(layer_num) + 
                   (is_reverse? "_reverse.txt" : ".txt");
-  bh_file_path += (is_hidden ? "lstm/lstm_bias_hh_l"
-                  : "lstm/lstm_bias_ih_l") + std::to_string(layer_num) + 
+  bh_file_path += (is_hidden ? "bilstm/bilstm_bias_hh_l"
+                  : "bilstm/bilstm_bias_ih_l") + std::to_string(layer_num) + 
                   (is_reverse ? "_reverse.txt" : ".txt");
 
   readfile(weight_dims, weight_vec, wh_file_path);
@@ -62,7 +62,7 @@ void UserRelease(void *ptr) {
 
 int main() {
   using ::mt::dnn::Tensor;
-  std::string input_file_path(DATA_DIR "lstm/lstm_input.txt");
+  std::string input_file_path(DATA_DIR "bilstm/bilstm_input.txt");
   std::vector<float> input_data_vec;
   std::vector<int> input_dims;
   readfile(input_dims, input_data_vec, input_file_path);
@@ -71,7 +71,7 @@ int main() {
   const int input_features = input_dims[2];
   const int seq_len = input_dims[0];
   const int batch_size = input_dims[1];
-  bool bidirectional = false;
+  bool bidirectional = true;
   int split_nums = 4; // lstm weight has to spilt to 4 seq.
   int hidden_size;
 
@@ -87,6 +87,7 @@ int main() {
   }
   std::vector<float> hi_vec((bidirectional ? 2 : 1) * batch_size * hidden_size, 0.0f);
   std::vector<float> ci_vec((bidirectional ? 2 : 1) * batch_size * hidden_size, 0.0f);
+  ;
 
   ::mt::dnn::RNN rnn;
   rnn.SetMode(::mt::dnn::RNN::Mode::LSTM);
@@ -161,6 +162,16 @@ int main() {
   bh.SetType(Tensor::Type::FLOAT);
   bh.SetNdInfo({hidden_size * 4});
 
+  wir.SetType(Tensor::Type::FLOAT);
+  wir.SetNdInfo({hidden_size * 4, input_features});
+  bir.SetType(Tensor::Type::FLOAT);
+  bir.SetNdInfo({hidden_size * 4});
+  bir.SetType(Tensor::Type::FLOAT);
+  whr.SetType(Tensor::Type::FLOAT);
+  whr.SetNdInfo({hidden_size * 4, hidden_size});
+  bhr.SetType(Tensor::Type::FLOAT);
+  bhr.SetNdInfo({hidden_size * 4});
+
   const int weights_per_layer = bidirectional ? 4 : 2;
   const int bias_per_layer = bidirectional ? 4 : 2;
 
@@ -231,9 +242,9 @@ int main() {
       Tensor::MemcpyH2D(cl_whr, weight_vecs[weights_per_layer * i + 3].data(),
                         wh_size);
 
-      Tensor::MemcpyH2D(cl_bir, weight_vecs[weights_per_layer * i + 2].data(),
+      Tensor::MemcpyH2D(cl_bir, bias_vecs[bias_per_layer * i + 2].data(),
                         bi_size);
-      Tensor::MemcpyH2D(cl_bhr, weight_vecs[weights_per_layer * i + 3].data(),
+      Tensor::MemcpyH2D(cl_bhr, bias_vecs[bias_per_layer * i + 3].data(),
                         bh_size);
 
       wir.SetAddr(cl_wir);
@@ -260,6 +271,7 @@ int main() {
     int time_cost = std::chrono::duration_cast<std::chrono::microseconds> (time_end - time_begin).count();
     std::cout << "lstm cost:" << time_cost << "[us]" << std::endl;
   }
+  
   std::vector<float> output_vec(output_size / sizeof(float));
   std::vector<float> ho_vec(hi_size / sizeof(float));
   std::vector<float> co_vec(ci_size / sizeof(float));
